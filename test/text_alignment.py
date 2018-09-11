@@ -6,7 +6,7 @@ import os
 import sys
 
 # Look for tkmagicgrid in the parent directory
-sys.path.append("..")
+sys.path.insert(0, "..")
 
 try:
     # Python 3
