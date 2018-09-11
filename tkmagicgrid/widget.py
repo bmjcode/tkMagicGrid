@@ -571,12 +571,26 @@ class MagicGrid(Frame, object):
         if not isinstance(lower, Spinbox):
             upper.focus_set()
 
+        # Sync the insert position for text entry widgets
+        if hasattr(lower, "index") and hasattr(upper, "icursor"):
+            if lower.index("insert") == lower.index("end"):
+                upper.icursor("end")
+            else:
+                upper.icursor(lower.index("insert"))
+
     def _navigate_down(self, upper, lower, event=None):
         """Move keyboard focus to the cell below."""
 
         # Spinbox widgets already use the up and down arrow keys
         if not isinstance(upper, Spinbox):
             lower.focus_set()
+
+        # Sync the insert position for text entry widgets
+        if hasattr(upper, "index") and hasattr(lower, "icursor"):
+            if upper.index("insert") == upper.index("end"):
+                lower.icursor("end")
+            else:
+                lower.icursor(upper.index("insert"))
 
     def _navigate_left(self, left, right, event=None):
         """Move keyboard focus to the cell to the left."""
