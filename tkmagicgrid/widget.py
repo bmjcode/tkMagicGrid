@@ -265,6 +265,11 @@ class MagicGrid(Frame, object):
                 try:
                     row[column].configure(kw)
 
+                except (IndexError):
+                    # There may be gaps in the row if a cell was added
+                    # with columnspan > 1
+                    pass
+
                 except (TclError):
                     if ignore_errors: continue
                     else: raise
@@ -505,7 +510,10 @@ class MagicGrid(Frame, object):
                 pass
 
         # Increment the grid column
-        self._col += 1
+        if "columnspan" in grid_kw:
+            self._col += grid_kw["columnspan"]
+        else:
+            self._col += 1
 
         # Check if this is the longest row we've added, and if it is,
         # store its length for later reference
