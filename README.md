@@ -46,3 +46,8 @@ root.mainloop()
 ```
 
 For detailed documentation, try `python -m pydoc tkmagicgrid`.
+
+
+## Related Modules
+
+[tkScrolledFrame](https://github.com/bmjcode/tkScrolledFrame) provides an easy way to make a `MagicGrid` (and other large widgets) scrollable.
