@@ -358,7 +358,8 @@ class MagicGrid(Frame, object):
                 kw["justify"] = "left"
 
         widget = self.add_widget(widget_class, **kw)
-        if initial_value:
+
+        if initial_value or isinstance(initial_value, Number):
             # The delete() call is necessary for Spinbox widgets if
             # the "from_", "to_", and/or "increment" keywords are set
             widget.delete(0, "end")
@@ -375,7 +376,7 @@ class MagicGrid(Frame, object):
         Returns the new widget.
         """
 
-        if text:
+        if text or isinstance(text, Number):
             # Preset the widget text
             kw["text"] = str(text)
 
