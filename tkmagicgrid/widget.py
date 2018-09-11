@@ -582,7 +582,7 @@ class MagicGrid(Frame, object):
         """Move keyboard focus to the cell to the left."""
 
         should_move = False
-        if self._accepts_text_entry(right):
+        if hasattr(right, "index"):
             # Only move if the cursor is at the far left of the textbox
             if right.index("insert") == right.index(0):
                 should_move = True
@@ -597,14 +597,14 @@ class MagicGrid(Frame, object):
 
             # If the left-hand widget accepts text entry, move the
             # insertion point to its far right
-            if self._accepts_text_entry(left):
+            if hasattr(left, "icursor"):
                 left.icursor("end")
 
     def _navigate_right(self, left, right, event=None):
         """Move keyboard focus to the cell to the right."""
 
         should_move = False
-        if self._accepts_text_entry(left):
+        if hasattr(left, "index"):
             # Only move if the cursor is at the far right of the textbox
             if left.index("insert") == left.index("end"):
                 should_move = True
@@ -619,16 +619,8 @@ class MagicGrid(Frame, object):
 
             # If the right-hand widget accepts text entry, move the
             # insertion point to its far left
-            if self._accepts_text_entry(right):
+            if hasattr(right, "icursor"):
                 right.icursor(0)
-
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def _accepts_text_entry(widget):
-        """Returns whether the specified widget accepts text entry."""
-
-        return hasattr(widget, "icursor")
 
     # ------------------------------------------------------------------------
 
