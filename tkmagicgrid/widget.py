@@ -262,17 +262,14 @@ class MagicGrid(Frame, object):
             # The last row may have fewer than (self._row_max - 1) cells
             # if we are still adding data, or just called self.end_row()
             if row:
-                try:
-                    row[column].configure(kw)
+                cell = row[column]
+                if cell:
+                    try:
+                        cell.configure(kw)
 
-                except (IndexError):
-                    # There may be gaps in the row if a cell was added
-                    # with columnspan > 1
-                    pass
-
-                except (TclError):
-                    if ignore_errors: continue
-                    else: raise
+                    except (TclError):
+                        if ignore_errors: continue
+                        else: raise
 
     def configure_row(self, row, **kw):
         """Configure all cell widgets in the specified row.
@@ -306,12 +303,13 @@ class MagicGrid(Frame, object):
 
         # Configure widgets
         for cell in self._cells[row]:
-            try:
-                cell.configure(kw)
+            if cell:
+                try:
+                    cell.configure(kw)
 
-            except (TclError):
-                if ignore_errors: continue
-                else: raise
+                except (TclError):
+                    if ignore_errors: continue
+                    else: raise
 
     def end_row(self):
         """End the current row.
@@ -469,21 +467,27 @@ class MagicGrid(Frame, object):
         # Store a reference to the widget
         self._cells[self._row].append(widget)
 
+        # Pad self._cells if the widget spans multiple columns
+        if "columnspan" in grid_kw:
+            for _ in range(1, kw["columnspan"]):
+                self._cells[self._row].append(None)
+
         # Bind the up and down arrow keys
         if self._enable_arrow_keys and self._row >= 1:
             try:
                 # Identify the widget above this one
-                above_me = self._cells[self._row - 1][self._col]
+                upper = self._cells[self._row - 1][self._col]
 
-                # Up arrow navigates from widget to above_me
-                widget.bind("<Up>",
-                            lambda event, upper=above_me, lower=widget:
-                            self._navigate_up(upper, lower, event))
+                if upper:
+                    # Up arrow navigates from widget to upper
+                    widget.bind("<Up>",
+                                lambda event, upper=upper, lower=widget:
+                                self._navigate_up(upper, lower, event))
 
-                # Down arrow navigates from above_me to widget
-                above_me.bind("<Down>",
-                              lambda event, upper=above_me, lower=widget:
-                              self._navigate_down(upper, lower, event))
+                    # Down arrow navigates from upper to widget
+                    upper.bind("<Down>",
+                               lambda event, upper=upper, lower=widget:
+                               self._navigate_down(upper, lower, event))
 
             except (IndexError, TclError):
                 # Couldn't bind the arrow keys
@@ -493,17 +497,18 @@ class MagicGrid(Frame, object):
         if self._enable_arrow_keys and self._col >= 1:
             try:
                 # Identify the widget left of this one
-                left_of_me = self._cells[self._row][self._col - 1]
+                left = self._cells[self._row][self._col - 1]
 
-                # Left arrow navigates from widget to left_of_me
-                widget.bind("<Left>",
-                            lambda event, left=left_of_me, right=widget:
-                            self._navigate_left(left, right, event))
+                if left:
+                    # Left arrow navigates from widget to left
+                    widget.bind("<Left>",
+                                lambda event, left=left, right=widget:
+                                self._navigate_left(left, right, event))
 
-                # Right arrow navigates from left_of_me to widget
-                left_of_me.bind("<Right>",
-                                lambda event, left=left_of_me, right=widget:
-                                self._navigate_right(left, right, event))
+                    # Right arrow navigates from left to widget
+                    left.bind("<Right>",
+                              lambda event, left=left, right=widget:
+                              self._navigate_right(left, right, event))
 
             except (IndexError, TclError):
                 # Couldn't bind the arrow keys
