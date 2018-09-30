@@ -16,7 +16,7 @@ except (ImportError):
     import Tkinter as tk
 
 
-class MagicGrid(tk.Frame, object):
+class MagicGrid(tk.Frame):
     """Table layout widget.
 
     The constructor accepts the usual Tkinter keyword arguments, plus
@@ -28,9 +28,6 @@ class MagicGrid(tk.Frame, object):
       shade_rows (bool; default: True)
         Enables shading alternate rows for readability.
     """
-
-    # Note we explicitly inherit from object because Tkinter on Python 2
-    # uses old-style classes.
 
     def __init__(self, master=None, **kw):
         """Return a new MagicGrid widget."""
