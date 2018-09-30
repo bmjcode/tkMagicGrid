@@ -138,6 +138,12 @@ class MagicGrid(tk.Frame):
         Returns the new widget.
         """
 
+        # Widgets spanning multiple rows are not currently supported
+        # because of how self._cells is implemented
+        if "rowspan" in kw:
+            raise tk.TclError('the "rowspan" keyword '
+                              'is not currently supported')
+
         # Don't pass grid()'s keywords to the widget constructor
         # Note _add_widget() will process widget keywords further
         widget_kw = copy.copy(kw)
