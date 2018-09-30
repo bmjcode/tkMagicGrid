@@ -1,4 +1,4 @@
-**tkMagicGrid** is a spreadsheet-like widget for Python + Tkinter. It can be used to display static data, or to lay out other widgets as an alternative to calling `grid()` manually, or to do a bit of both.
+**tkMagicGrid** is a table layout widget for Python + Tkinter. It can be used to display static data, or to lay out other widgets as an alternative to calling `grid()` manually, or to do a bit of both.
 
 tkMagicGrid is designed to be simple above all else. It has no dependencies outside the Python standard library. Its API is designed to let you accomplish tasks with as few method calls as possible.
 

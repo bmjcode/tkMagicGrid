@@ -18,7 +18,7 @@ except (ImportError):
 
 
 class MagicGrid(Frame, object):
-    """Spreadsheet-like widget.
+    """Table layout widget.
 
     The constructor accepts the usual Tkinter keyword arguments, plus
     a handful of its own:

@@ -6,7 +6,7 @@ NAME = "tkMagicGrid"
 VERSION = "1.0.2"
 AUTHOR = "Benjamin Johnson"
 AUTHOR_EMAIL = "bmjcode@gmail.com"
-DESCRIPTION = "Spreadsheet-like widget for Tkinter"
+DESCRIPTION = "Table layout widget for Tkinter"
 
 with open("README.md", "r") as readme:
     LONG_DESCRIPTION = readme.read()

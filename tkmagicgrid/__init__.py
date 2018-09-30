@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-"""A spreadsheet-like widget for Tkinter.
+"""A table layout widget for Tkinter.
 
-tkMagicGrid is a spreadsheet-like widget for Python + Tkinter.
+tkMagicGrid is a table layout widget for Python + Tkinter.
 It can be used to display static data, or to lay out other widgets
 as an alternative to calling grid() manually, or to do a bit of both.
 
