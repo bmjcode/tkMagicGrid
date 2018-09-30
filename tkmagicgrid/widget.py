@@ -5,19 +5,18 @@
 import os
 import sys
 import copy
-
-from numbers import Number
+import numbers
 
 # MagicGrid does not use ttk because its widgets do not allow direct styling.
 try:
     # Python 3
-    from tkinter import *
+    import tkinter as tk
 except (ImportError):
     # Python 2
-    from Tkinter import *
+    import Tkinter as tk
 
 
-class MagicGrid(Frame, object):
+class MagicGrid(tk.Frame, object):
     """Table layout widget.
 
     The constructor accepts the usual Tkinter keyword arguments, plus
@@ -36,7 +35,7 @@ class MagicGrid(Frame, object):
     def __init__(self, master=None, **kw):
         """Return a new MagicGrid widget."""
 
-        Frame.__init__(self, master)
+        tk.Frame.__init__(self, master)
 
         # Process MagicGrid's custom keywords.
         # Note we have to remove our custom keywords after processing them,
@@ -59,7 +58,7 @@ class MagicGrid(Frame, object):
             self._shade_rows = True
 
         # Pass remaining configuration options to the Frame class
-        Frame.configure(self, **kw)
+        tk.Frame.configure(self, **kw)
 
         # The row and column where we should add our next cell
         self._row = 0
@@ -91,7 +90,7 @@ class MagicGrid(Frame, object):
         Returns a Tk Label widget corresponding to the new cell.
         """
 
-        return self._add_standard_widget(Label, contents, **kw)
+        return self._add_standard_widget(tk.Label, contents, **kw)
 
     def add_header(self, *cells, **kw):
         """Add a header row to the grid.
@@ -162,7 +161,7 @@ class MagicGrid(Frame, object):
         Returns the new widget.
         """
 
-        return self._add_standard_widget(Button, text, **kw)
+        return self._add_standard_widget(tk.Button, text, **kw)
 
     def add_widget_checkbutton(self, text="", **kw):
         """Create a Checkbutton widget and add it to the grid.
@@ -177,7 +176,7 @@ class MagicGrid(Frame, object):
         Returns the new widget.
         """
 
-        return self._add_standard_widget(Checkbutton, text, **kw)
+        return self._add_standard_widget(tk.Checkbutton, text, **kw)
 
     def add_widget_entry(self, initial_value="", **kw):
         """Create an Entry widget and add it to the grid.
@@ -191,7 +190,7 @@ class MagicGrid(Frame, object):
         Returns the new widget.
         """
 
-        return self._add_entry_widget(Entry, initial_value, **kw)
+        return self._add_entry_widget(tk.Entry, initial_value, **kw)
 
     def add_widget_radiobutton(self, text="", **kw):
         """Create a Radiobutton widget and add it to the grid.
@@ -206,7 +205,7 @@ class MagicGrid(Frame, object):
         Returns the new widget.
         """
 
-        return self._add_standard_widget(Radiobutton, text, **kw)
+        return self._add_standard_widget(tk.Radiobutton, text, **kw)
 
     def add_widget_spinbox(self, initial_value="", **kw):
         """Create a Spinbox widget and add it to the grid.
@@ -220,7 +219,7 @@ class MagicGrid(Frame, object):
         Returns the new widget.
         """
 
-        return self._add_entry_widget(Spinbox, initial_value, **kw)
+        return self._add_entry_widget(tk.Spinbox, initial_value, **kw)
 
     def configure_cell(self, row, column, **kw):
         """Configure the widget corresponding to the specified cell."""
@@ -267,7 +266,7 @@ class MagicGrid(Frame, object):
                     try:
                         cell.configure(kw)
 
-                    except (TclError):
+                    except (tk.TclError):
                         if ignore_errors: continue
                         else: raise
 
@@ -307,7 +306,7 @@ class MagicGrid(Frame, object):
                 try:
                     cell.configure(kw)
 
-                except (TclError):
+                except (tk.TclError):
                     if ignore_errors: continue
                     else: raise
 
@@ -346,7 +345,7 @@ class MagicGrid(Frame, object):
             kw["width"] = len(str(initial_value))
 
         if not "justify" in kw:
-            if isinstance(initial_value, Number):
+            if isinstance(initial_value, numbers.Number):
                 # Right-align if the initial value is numeric
                 kw["justify"] = "right"
 
@@ -362,7 +361,7 @@ class MagicGrid(Frame, object):
 
         widget = self.add_widget(widget_class, **kw)
 
-        if initial_value or isinstance(initial_value, Number):
+        if initial_value or isinstance(initial_value, numbers.Number):
             # The delete() call is necessary for Spinbox widgets if
             # the "from_", "to_", and/or "increment" keywords are set
             widget.delete(0, "end")
@@ -379,16 +378,16 @@ class MagicGrid(Frame, object):
         Returns the new widget.
         """
 
-        if text or isinstance(text, Number):
+        if text or isinstance(text, numbers.Number):
             # Preset the widget text
             kw["text"] = str(text)
 
-        if widget_class == Button:
+        if widget_class == tk.Button:
             # Don't change the text alignment for Button widgets
             # because most people are used to the default
             pass
 
-        elif widget_class in (Checkbutton, Radiobutton):
+        elif widget_class in (tk.Checkbutton, tk.Radiobutton):
             if text:
                 # Left-align by default if a label was specified
                 if not "anchor" in kw:
@@ -404,7 +403,7 @@ class MagicGrid(Frame, object):
                     kw["justify"] = "center"
 
         else:
-            if isinstance(text, Number):
+            if isinstance(text, numbers.Number):
                 # Right-align numeric values by default
                 if not "anchor" in kw:
                     kw["anchor"] = "e"
@@ -489,7 +488,7 @@ class MagicGrid(Frame, object):
                                lambda event, upper=upper, lower=widget:
                                self._navigate_down(upper, lower, event))
 
-            except (IndexError, TclError):
+            except (IndexError, tk.TclError):
                 # Couldn't bind the arrow keys
                 pass
 
@@ -510,7 +509,7 @@ class MagicGrid(Frame, object):
                               lambda event, left=left, right=widget:
                               self._navigate_right(left, right, event))
 
-            except (IndexError, TclError):
+            except (IndexError, tk.TclError):
                 # Couldn't bind the arrow keys
                 pass
 
@@ -556,7 +555,7 @@ class MagicGrid(Frame, object):
                 else:
                     widget.configure(background=self.bg_color)
 
-        except (TclError):
+        except (tk.TclError):
             # Silently ignore Tcl/Tk errors. This is mostly to avoid
             # trouble when adding ttk widgets, which don't support changing
             # colors this way (and will raise an exception if you try).
@@ -568,7 +567,7 @@ class MagicGrid(Frame, object):
         """Move keyboard focus to the cell above."""
 
         # Spinbox widgets already use the up and down arrow keys
-        if not isinstance(lower, Spinbox):
+        if not isinstance(lower, tk.Spinbox):
             upper.focus_set()
 
         # Sync the insert position for text entry widgets
@@ -582,7 +581,7 @@ class MagicGrid(Frame, object):
         """Move keyboard focus to the cell below."""
 
         # Spinbox widgets already use the up and down arrow keys
-        if not isinstance(upper, Spinbox):
+        if not isinstance(upper, tk.Spinbox):
             lower.focus_set()
 
         # Sync the insert position for text entry widgets
