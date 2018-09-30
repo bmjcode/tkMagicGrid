@@ -437,6 +437,14 @@ class MagicGrid(tk.Frame):
         Returns the new widget.
         """
 
+        # Widgets spanning multiple rows are not currently supported.
+        # Normally add_widget() will catch this before the widget is
+        # created, but this is here as a failsafe in case some naughty
+        # application is using our internal methods directly.
+        if "rowspan" in kw:
+            raise tk.TclError('the "rowspan" keyword '
+                              'is not currently supported')
+
         # Whether to colorize the widget
         if ("bg" in kw
             or "background" in kw
