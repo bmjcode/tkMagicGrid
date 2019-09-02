@@ -1,7 +1,5 @@
 """Implementation of the MagicGrid widget."""
 
-import os
-import sys
 import copy
 import numbers
 

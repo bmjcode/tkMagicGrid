@@ -6,7 +6,6 @@ If the "-e" argument is present, the values will be displayed in editable
 Entry widgets. Otherwise, the values will be displayed read-only.
 """
 
-import os
 import sys
 
 # Look for tkmagicgrid in the parent directory

@@ -2,7 +2,6 @@
 
 """Test program for MagicGrid's default text alignment rules."""
 
-import os
 import sys
 
 # Look for tkmagicgrid in the parent directory
