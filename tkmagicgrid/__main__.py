@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Demonstration of the MagicGrid widget."""
 
 import os

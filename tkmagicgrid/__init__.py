@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """A table layout widget for Tkinter.
 
 tkMagicGrid is a table layout widget for Python + Tkinter.
