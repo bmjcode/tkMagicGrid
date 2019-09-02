@@ -143,7 +143,7 @@ class MagicGrid(tk.Frame):
         # Don't pass grid()'s keywords to the widget constructor
         # Note _add_widget() will process widget keywords further
         widget_kw = copy.copy(kw)
-        for key in self._grid_keys:
+        for key in self._GRID_KEYS:
             if key in widget_kw:
                 del widget_kw[key]
 
@@ -246,7 +246,7 @@ class MagicGrid(tk.Frame):
 
         # Separate keywords for grid_columnconfigure()
         grid_kw = {}
-        for key in self._grid_column_row_keys:
+        for key in self._GRID_COLUMN_ROW_KEYS:
             if key in kw:
                 grid_kw[key] = kw[key]
                 del kw[key]
@@ -290,7 +290,7 @@ class MagicGrid(tk.Frame):
 
         # Separate keywords for grid_rowconfigure()
         grid_kw = {}
-        for key in self._grid_column_row_keys:
+        for key in self._GRID_COLUMN_ROW_KEYS:
             if key in kw:
                 grid_kw[key] = kw[key]
                 del kw[key]
@@ -455,7 +455,7 @@ class MagicGrid(tk.Frame):
 
         # Separate keywords for grid()
         grid_kw = {}
-        for key in self._grid_keys:
+        for key in self._GRID_KEYS:
             if key in kw:
                 grid_kw[key] = kw[key]
 
@@ -645,12 +645,12 @@ class MagicGrid(tk.Frame):
     # ------------------------------------------------------------------------
 
     # Keyword arguments used by grid()
-    _grid_keys = ("column", "columnspan", "in_",
+    _GRID_KEYS = ("column", "columnspan", "in_",
                   "ipadx", "ipady", "padx", "pady",
                   "row", "rowspan", "sticky")
 
     # Keyword arguments used by grid_columnconfigure() and grid_rowconfigure()
-    _grid_column_row_keys = "minsize", "pad", "weight"
+    _GRID_COLUMN_ROW_KEYS = "minsize", "pad", "weight"
 
     # Default colors for the grid
     bg_color = "white"
