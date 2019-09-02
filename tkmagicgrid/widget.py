@@ -18,8 +18,26 @@ class MagicGrid(tk.Frame):
     The constructor accepts the usual Tkinter keyword arguments, plus
     a handful of its own:
 
+      bg_color (str)
+        Default background color for ordinary rows.
+
+      bg_header (str)
+        Default background color for header rows.
+
+      bg_shade (str)
+        Default background color for shading alternate rows.
+
       enable_arrow_keys (bool; default: True)
         Enables keyboard navigation between cells using the arrow keys.
+
+      fg_color (str)
+        Default foreground color for ordinary rows.
+
+      fg_header (str)
+        Default foreground color for header rows.
+
+      fg_shade (str)
+        Default foreground color for shading alternate rows.
 
       shade_rows (bool; default: True)
         Enables shading alternate rows for readability.
@@ -50,6 +68,17 @@ class MagicGrid(tk.Frame):
             # Shade rows by default
             self._shade_rows = True
 
+        # Default row colors
+        for attr in ("bg_color", "bg_header", "bg_shade",
+                     "fg_color", "fg_header", "fg_shade"):
+            attr_name = "_{0}".format(attr)
+            default_name = "_DEFAULT_{0}".format(attr.upper())
+            if attr in kw:
+                setattr(self, attr_name, kw[attr])
+                del kw[attr]
+            else:
+                setattr(self, attr_name, getattr(self, default_name))
+
         # Pass remaining configuration options to the Frame class
         tk.Frame.configure(self, **kw)
 
@@ -66,7 +95,7 @@ class MagicGrid(tk.Frame):
 
         if self._shade_rows:
             # Set the frame background to the default cell background
-            self.configure(background=self.bg_color)
+            self.configure(background=self._bg_color)
 
     # ------------------------------------------------------------------------
 
@@ -98,8 +127,8 @@ class MagicGrid(tk.Frame):
         """
 
         return self.add_row(*cells,
-                            background=self.bg_header,
-                            foreground=self.fg_header,
+                            background=self._bg_header,
+                            foreground=self._fg_header,
                             **kw)
 
     def add_row(self, *cells, **kw):
@@ -552,15 +581,15 @@ class MagicGrid(tk.Frame):
         try:
             if not ("fg" in kw or "foreground" in kw):
                 if self._row % 2 == 0:
-                    widget.configure(foreground=self.fg_shade)
+                    widget.configure(foreground=self._fg_shade)
                 else:
-                    widget.configure(foreground=self.fg_color)
+                    widget.configure(foreground=self._fg_color)
 
             if not ("bg" in kw or "background" in kw):
                 if self._row % 2 == 0:
-                    widget.configure(background=self.bg_shade)
+                    widget.configure(background=self._bg_shade)
                 else:
-                    widget.configure(background=self.bg_color)
+                    widget.configure(background=self._bg_color)
 
         except (tk.TclError):
             # Silently ignore Tcl/Tk errors. This is mostly to avoid
@@ -644,6 +673,18 @@ class MagicGrid(tk.Frame):
 
     # ------------------------------------------------------------------------
 
+    # Default colors for ordinary rows
+    _DEFAULT_BG_COLOR = "white"
+    _DEFAULT_FG_COLOR = "black"
+
+    # Default colors for header rows
+    _DEFAULT_BG_HEADER = "SteelBlue"
+    _DEFAULT_FG_HEADER = "white"
+
+    # Default colors for shading alternate rows
+    _DEFAULT_BG_SHADE = "LightSteelBlue"
+    _DEFAULT_FG_SHADE = "black"
+
     # Keyword arguments used by grid()
     _GRID_KEYS = ("column", "columnspan", "in_",
                   "ipadx", "ipady", "padx", "pady",
@@ -651,15 +692,3 @@ class MagicGrid(tk.Frame):
 
     # Keyword arguments used by grid_columnconfigure() and grid_rowconfigure()
     _GRID_COLUMN_ROW_KEYS = "minsize", "pad", "weight"
-
-    # Default colors for the grid
-    bg_color = "white"
-    fg_color = "black"
-
-    # Shade colors for alternate rows
-    bg_shade = "LightSteelBlue"
-    fg_shade = "black"
-
-    # Colors for header rows
-    bg_header = "SteelBlue"
-    fg_header = "white"
