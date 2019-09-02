@@ -15,7 +15,8 @@ name is lowercase), which exports a single class, `MagicGrid`.
 A brief example program:
 
 ```python
-# This assumes Python 3
+#!/usr/bin/env python3
+
 from tkinter import *
 from tkmagicgrid import *
 import io
