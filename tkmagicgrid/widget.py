@@ -69,6 +69,9 @@ class MagicGrid(tk.Frame):
             self._shade_rows = True
 
         # Default row colors
+        # Note: Releases prior to v1.0.3 exposed these attributes as
+        # public class variables, but this was not a documented feature
+        # and is no longer supported.
         for attr in ("bg_color", "bg_header", "bg_shade",
                      "fg_color", "fg_header", "fg_shade"):
             attr_name = "_{0}".format(attr)
